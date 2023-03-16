@@ -25,7 +25,6 @@
     </div>
   </div>
 </template>
-
 <script>
   export default {
     props: {
@@ -35,13 +34,21 @@
         required: true,
         default: 60,
       },
+      // 是否要撥放音效
+      sound: {
+        type: Boolean,
+        required: false,
+        default: false,
+      },
     },
     data() {
       return {
         countdown: this.time, // 倒數的初始時間（秒）
+        audio: null, // 音效檔案物件
       };
     },
     mounted() {
+      this.loadAudio(); // 在元件加載時加載音效檔案
       this.timer = setInterval(this.tick, 1000); // 每隔1秒鐘執行tick方法
     },
     beforeUnmount() {
@@ -51,13 +58,27 @@
       tick() {
         if (this.countdown > 0) { // 如果倒數時間大於0，則減去1秒
           this.countdown--;
+          if (this.sound && this.countdown === 3) { // 如果要撥放音效，且剩下3秒時
+            this.playAudio(); // 播放音效
+          }
         }
       },
       getImagePath(number) {
         return require(`@/assets/numbers/${number}.png`); // 動態生成數字圖片路徑
       },
       reset() {
-        this.countdown = 60; // 重新設定倒數時間為60秒
+        this.countdown = this.time; // 重新設定倒數時間為初始值
+      },
+      loadAudio() {
+        this.audio = new Audio(require('@/assets/sounds/countdown.mp3')); // 加載音效檔案
+        this.audio.load(); // 載入音效檔案
+      },
+      async playAudio() {
+        try {
+          await this.audio.play(); // 播放音效
+        } catch (error) {
+          console.error('Failed to play audio:', error); // 處理音效檔案播放的異常情況
+        }
       },
     },
   };

@@ -33,26 +33,50 @@
         required: true,
         default: 60,
       },
+      // 是否要撥放音效
+      sound: {
+        type: Boolean,
+        required: false,
+        default: false,
+      },
     },
     data() {
       return {
         countdown: this.time, // 倒數的初始時間（秒）
+        audio: null, // 音效檔案物件
       };
     },
     mounted() {
-      this.timer = setInterval(this.tick, 1000); // 每隔1秒鐘執行tick方法
+      this.timer = setInterval(this.tick, 1000); // 每秒呼叫tick方法
+      this.loadAudio(); // 載入音效
     },
     beforeUnmount() {
       clearInterval(this.timer); // 在元件銷毀前停止計時器
     },
     methods: {
+      loadAudio() {
+        this.audio = new Audio(require('@/assets/sounds/countdown.mp3')); // 載入音效檔案
+        this.audio.load(); // 加載音效
+
+      },
+      playAudio() {
+        const playPromise = this.audio.play(); // 播放音效
+        if (playPromise !== undefined) {
+          playPromise.catch(error => {
+            console.error('Failed to play audio:', error);
+          });
+        }
+      },
       tick() {
         if (this.countdown > 0) { // 如果倒數時間大於0，則減去1秒
           this.countdown--;
+          if (this.sound && this.countdown === 3) { // 如果需要撥放音效，且倒數時間剩下3秒時，撥放音效
+            this.playAudio();
+          }
         }
       },
       rest() {
-        this.countdown = 60; // 重新設定倒數時間為60秒
+        this.countdown = this.time; // 重新設定倒數時間為60秒
       }
     },
   };
