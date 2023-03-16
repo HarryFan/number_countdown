@@ -26,59 +26,62 @@
 </template>
 
 <script>
-export default {
-  data() {
-    return {
-      countdown: 60, // 倒數的初始時間（秒）
-    };
-  },
-  mounted() {
-    this.timer = setInterval(this.tick, 1000); // 每隔1秒鐘執行tick方法
-  },
-  beforeUnmount() {
-    clearInterval(this.timer); // 在元件銷毀前停止計時器
-  },
-  methods: {
-    tick() {
-      if (this.countdown > 0) { // 如果倒數時間大於0，則減去1秒
-        this.countdown--;
-      }
+  export default {
+    data() {
+      return {
+        countdown: 60, // 倒數的初始時間（秒）
+      };
     },
-    getImagePath(number) {
-      return require(`@/assets/numbers/${number}.jpeg`); // 動態生成數字圖片路徑
+    mounted() {
+      this.timer = setInterval(this.tick, 1000); // 每隔1秒鐘執行tick方法
     },
-  },
-};
+    beforeUnmount() {
+      clearInterval(this.timer); // 在元件銷毀前停止計時器
+    },
+    methods: {
+      tick() {
+        if (this.countdown > 0) { // 如果倒數時間大於0，則減去1秒
+          this.countdown--;
+        }
+      },
+      getImagePath(number) {
+        return require(`@/assets/numbers/${number}.png`); // 動態生成數字圖片路徑
+      },
+    },
+  };
 </script>
 
 <style scoped>
- /* 將元素水平置中 */
-.countdown-wrapper {
-  display: flex;
-  justify-content: center;
-}
+  /* 將元素水平置中 */
+  .countdown-wrapper {
+    display: flex;
+    justify-content: center;
+  }
 
-/* 將元素水平置中 */
-.countdown {
-  display: flex;
-  align-items: center; 
-}
+  /* 將元素水平置中 */
+  .countdown {
+    display: flex;
+    align-items: center;
+  }
 
-.countdown .img-wrapper {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+  .countdown .img-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 
-.countdown img {
-  width: 100px;
-  height: 100px;
-}
+  .countdown img {
+    width: 100px;
+    height: 100px;
+  }
 
-.separator-wrapper {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 0 0.3rem;
-}
+  .separator-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 0.3rem;
+    font-size: 80px;
+    font-weight: bold;
+    color: #000;
+  }
 </style>
