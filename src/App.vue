@@ -1,9 +1,9 @@
 <template>
   <div id="app">
     <img alt="Vue logo" src="./assets/logo.png">
-    <NumberCountDown />
+    <NumberCountDown :time="10" />
   
-    <NumberCountDownWithImages />
+    <NumberCountDownWithImages :time="10" />
   </div>
 </template>
 

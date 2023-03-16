@@ -19,7 +19,8 @@
       </div>
       <!-- 倒數計時結束提示 -->
       <div v-if="countdown <= 0" class="countdown-finished">
-        時間到了！
+        <div>時間到了！</div>
+        <button class="rest-button" @click="reset">重新開始</button>
       </div>
     </div>
   </div>
@@ -27,9 +28,17 @@
 
 <script>
   export default {
+    props: {
+      // 倒數時間（秒）
+      time: {
+        type: Number,
+        required: true,
+        default: 60,
+      },
+    },
     data() {
       return {
-        countdown: 60, // 倒數的初始時間（秒）
+        countdown: this.time, // 倒數的初始時間（秒）
       };
     },
     mounted() {
@@ -46,6 +55,9 @@
       },
       getImagePath(number) {
         return require(`@/assets/numbers/${number}.png`); // 動態生成數字圖片路徑
+      },
+      reset() {
+        this.countdown = 60; // 重新設定倒數時間為60秒
       },
     },
   };
@@ -83,5 +95,34 @@
     font-size: 80px;
     font-weight: bold;
     color: #000;
+  }
+
+  .countdown-finished {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    font-weight: bold;
+    color: #ff0000;
+  }
+
+  .rest-button {
+    background-color: #4caf50;
+    border: none;
+    color: #fff;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+    transition: background-color 0.3s;
+  }
+
+  .rest-button:hover {
+    background-color: #3e8e41;
   }
 </style>
