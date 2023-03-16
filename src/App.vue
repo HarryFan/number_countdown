@@ -1,17 +1,20 @@
 <template>
   <div id="app">
     <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <NumberCountDown />
+  
+    <NumberCountDownWithImages />
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+import NumberCountDown from './components/NumberCountDown.vue';
+import NumberCountDownWithImages from './components/NumberCountDownWithImages.vue';
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    NumberCountDown,
+    NumberCountDownWithImages
   }
 }
 </script>
@@ -24,5 +27,8 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+
+  
 }
+.img{width:auto;}
 </style>
