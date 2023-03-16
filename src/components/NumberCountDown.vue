@@ -18,6 +18,7 @@
       <!-- 倒數計時結束提示 -->
       <div v-if="countdown <= 0" class="countdown-finished">
         時間到了！
+        <button @click="rest" class="rest-button">重新開始</button> <!-- rest按鈕 -->
       </div>
     </div>
   </div>
@@ -25,23 +26,58 @@
 
 <script>
   export default {
+    props: {
+      // 倒數時間（秒）
+      time: {
+        type: Number,
+        required: true,
+        default: 60,
+      },
+      // 是否要撥放音效
+      sound: {
+        type: Boolean,
+        required: false,
+        default: false,
+      },
+    },
     data() {
       return {
-        countdown: 60, // 倒數的初始時間（秒）
+        countdown: this.time, // 倒數的初始時間（秒）
+        audio: null, // 音效檔案物件
       };
     },
     mounted() {
-      this.timer = setInterval(this.tick, 1000); // 每隔1秒鐘執行tick方法
+      this.timer = setInterval(this.tick, 1000); // 每秒呼叫tick方法
+      this.loadAudio(); // 載入音效
     },
     beforeUnmount() {
       clearInterval(this.timer); // 在元件銷毀前停止計時器
     },
     methods: {
+      loadAudio() {
+        this.audio = new Audio(require('@/assets/sounds/countdown.mp3')); // 載入音效檔案
+        this.audio.load(); // 加載音效
+
+      },
+      playAudio() {
+        const playPromise = this.audio.play(); // 播放音效
+        if (playPromise !== undefined) {
+          playPromise.catch(error => {
+            console.error('Failed to play audio:', error);
+          });
+        }
+      },
       tick() {
         if (this.countdown > 0) { // 如果倒數時間大於0，則減去1秒
           this.countdown--;
+          if (this.sound && this.countdown === 3) { // 如果需要撥放音效，且倒數時間剩下3秒時，撥放音效
+            this.playAudio();
+          }
         }
       },
+      rest() {
+        this.countdown = this.time; // 重新設定倒數時間為60秒
+      }
     },
   };
 </script>
@@ -51,7 +87,7 @@
   .countdown-wrapper {
     display: flex;
     justify-content: center;
-    margin:1em 0;
+    margin: 1em 0;
   }
 
   /* 將元素垂直置中 */
@@ -85,5 +121,27 @@
     font-size: 24px;
     font-weight: bold;
     color: #ff0000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .rest-button {
+    background-color: #4caf50;
+    border: none;
+    color: #fff;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+    transition: background-color 0.3s;
+  }
+
+  .rest-button:hover {
+    background-color: #3e8e41;
   }
 </style>
