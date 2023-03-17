@@ -1,7 +1,8 @@
 <template>
   <div id="app">
     <img alt="Vue logo" src="./assets/logo.png">
-    <NumberCountDown :time="10" :sound=true />
+    <NumberCountDown :time="10" :sound=false />
+    <NumberCountDownWithProgressBar :time="10" :sound=true />
     <NumberCountDownWithImages :time="10" :sound="false" />
   </div>
 </template>
@@ -9,12 +10,14 @@
 <script>
   import NumberCountDown from './components/NumberCountDown.vue';
   import NumberCountDownWithImages from './components/NumberCountDownWithImages.vue';
+import NumberCountDownWithProgressBar from './components/NumberCountDownWithProgressBar.vue';
   export default {
     name: 'App',
     components: {
-      NumberCountDown,
-      NumberCountDownWithImages
-    }
+    NumberCountDown,
+    NumberCountDownWithImages,
+    NumberCountDownWithProgressBar
+}
   }
 </script>
 
